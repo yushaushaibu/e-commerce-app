@@ -20,8 +20,8 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
     console.log(req.body);
     res.send('Account created!!')
-})
+});
 
 app.listen(3000, () => {
     console.log('Listening..')
-})
+});

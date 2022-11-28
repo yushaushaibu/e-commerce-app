@@ -22,19 +22,24 @@ class UsersRepository {
     );
   }
 
-  // creates records. attrs is an object containing user form data
+  // creates records from getAll() data. attrs is an object containing user form data
   async create(attrs) {
     const records = await this.getAll();
     records.push(attrs);
 
-    await fs.promises.writeFile(this.filename, JSON.stringify(records))
+    await this.writeAll(records);
+  }
+
+  // writes users record
+  async writeAll(records) {
+    await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
   }
 }
 
 const test = async () => {
   const repo = new UsersRepository("users.json"); // access users repo
-  await repo.create({ email: 'test@test.com', password: 'password'}); // save new records to users.json
-  const users = await repo.getAll();  // get all users records
+  await repo.create({ email: "test@test.com", password: "password" }); // save new records to users.json
+  const users = await repo.getAll(); // get all users records
   console.log(users);
 };
 

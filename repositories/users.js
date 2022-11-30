@@ -16,8 +16,8 @@ class UsersRepository {
     }
   }
 
+  // reads content in file, convert to JS object and return data
   async getAll() {
-    // reads content in file, convert to JS object and return data
     return JSON.parse(
       await fs.promises.readFile(this.filename, { encoding: "utf8" })
     );
@@ -32,7 +32,7 @@ class UsersRepository {
     await this.writeAll(records);
   }
 
-  // writes users record
+  // writes users into record
   async writeAll(records) {
     await fs.promises.writeFile(
       this.filename,
@@ -40,25 +40,42 @@ class UsersRepository {
     );
   }
 
+  // makes a randomized ID
   randomId() {
     return crypto.randomBytes(5).toString("hex");
   }
 
+  // finds record using id entered
   async getOne(id) {
     const records = await this.getAll();
     return records.find((record) => record.id === id);
   }
 
+  // deletes record using id entered
   async delete(id) {
     const records = await this.getAll();
-    const filteredRecords = records.filter(record => record.id !== id);
+    const filteredRecords = records.filter((record) => record.id !== id);
     await this.writeAll(filteredRecords);
+  }
+
+  // update records
+  async update(id, attrs) {
+    const records = await this.getAll();
+    const record = records.find(record => record.id === id);
+
+    if (!record) {
+      throw new Error(`Record with id ${id} not found`);
+    }
+
+    Object.assign(record, attrs);
+    await this.writeAll(records);
   }
 }
 
 const test = async () => {
   const repo = new UsersRepository("users.json"); // access users repo
-  await repo.delete("cf7c894b9d");
+  // await repo.create({ email: 'realme@you.com'});
+  await repo.update("5h4goo4646", {password: '85-5t55'});
 };
 
 test();

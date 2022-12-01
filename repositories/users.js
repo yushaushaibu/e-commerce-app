@@ -92,8 +92,8 @@ class UsersRepository {
 
 // const test = async () => {
 //   const repo = new UsersRepository("users.json"); // access users repo
-// await repo.create({ email: 'realme@you.com'});
-// await repo.update("7aeb3a8140", {password: 'ys201091'});
+//   await repo.create({ email: 'realme@you.com'});
+//   await repo.update("7aeb3a8140", {password: 'ys201091'});
 //   const user = await repo.getOneBy({
 //     email: "realme1@you.com",
 //     id: "7aeb3a8140",

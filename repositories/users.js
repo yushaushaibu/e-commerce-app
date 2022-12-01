@@ -23,7 +23,7 @@ class UsersRepository {
     );
   }
 
-  // creates records from getAll() data. attrs is an object containing user form data
+  // collects records from getAll(). attrs is an object containing user form data
   async create(attrs) {
     attrs.id = this.randomId();
     const records = await this.getAll();
@@ -61,7 +61,7 @@ class UsersRepository {
   // update records
   async update(id, attrs) {
     const records = await this.getAll();
-    const record = records.find(record => record.id === id);
+    const record = records.find((record) => record.id === id);
 
     if (!record) {
       throw new Error(`Record with id ${id} not found`);
@@ -70,12 +70,35 @@ class UsersRepository {
     Object.assign(record, attrs);
     await this.writeAll(records);
   }
+
+  // finds record using any filter like email, id etc.
+  async getOneBy(filters) {
+    const records = await this.getAll();
+    for (let record of records) {
+      let found = true;
+
+      for (let key in filters) {
+        if (record[key] !== filters[key]) {
+          found = false;
+        }
+      }
+
+      if (found) {
+        return record;
+      }
+    }
+  }
 }
 
 const test = async () => {
   const repo = new UsersRepository("users.json"); // access users repo
   // await repo.create({ email: 'realme@you.com'});
-  await repo.update("5h4goo4646", {password: '85-5t55'});
+  // await repo.update("7aeb3a8140", {password: 'ys201091'});
+  const user = await repo.getOneBy({
+    email: "realme1@you.com",
+    id: "7aeb3a8140",
+  });
+  console.log(user);
 };
 
 test();

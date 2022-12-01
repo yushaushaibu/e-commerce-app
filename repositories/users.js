@@ -23,7 +23,7 @@ class UsersRepository {
     );
   }
 
-  // collects records from getAll(). attrs is an object containing user form data
+  // collect records from getAll(). attrs is an object containing user form data
   async create(attrs) {
     attrs.id = this.randomId();
     const records = await this.getAll();
@@ -90,15 +90,18 @@ class UsersRepository {
   }
 }
 
-const test = async () => {
-  const repo = new UsersRepository("users.json"); // access users repo
-  // await repo.create({ email: 'realme@you.com'});
-  // await repo.update("7aeb3a8140", {password: 'ys201091'});
-  const user = await repo.getOneBy({
-    email: "realme1@you.com",
-    id: "7aeb3a8140",
-  });
-  console.log(user);
-};
+// const test = async () => {
+//   const repo = new UsersRepository("users.json"); // access users repo
+// await repo.create({ email: 'realme@you.com'});
+// await repo.update("7aeb3a8140", {password: 'ys201091'});
+//   const user = await repo.getOneBy({
+//     email: "realme1@you.com",
+//     id: "7aeb3a8140",
+//   });
+//   console.log(user);
+// };
 
-test();
+// test();
+
+// EXPORTING INSTANCE OF THE CLASS
+module.exports = new UsersRepository('users.json');

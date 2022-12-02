@@ -51,12 +51,13 @@ class UsersRepository {
     );
   }
 
-  async comparePassword(savedPass, userLogginPass) {
+  async comparePasswords(savedPass, userLogginPass) {
     // savedPass -> password save in our database ie hashed.salt
     // userLoggingPass -> Signin password entered by user
     const [hashed, salt] = savedPass.split(".");
-    const hashedBuffer = await scrypt(userLogginPass, salt, 64);
-    return hashed === hashedBuffer.toString("hex");
+    const hashedUserLogginPass = await scrypt(userLogginPass, salt, 64);
+
+    return hashed === hashedUserLogginPass.toString("hex");
   }
 
   // makes a randomized ID

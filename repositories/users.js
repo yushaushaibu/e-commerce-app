@@ -2,7 +2,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 const util = require("util");
 
-const scrypt = util.promisify(crypto.scrypt);  // turns scrypt into a promisified function
+const scrypt = util.promisify(crypto.scrypt); // turns scrypt into a promisified function
 class UsersRepository {
   constructor(filename) {
     if (!filename) {
@@ -29,14 +29,13 @@ class UsersRepository {
   async create(attrs) {
     // attrs === { email:'', password:'' }
     attrs.id = this.randomId();
-
-    const salt = crypto.randomBytes(8).toString('hex');
+    const salt = crypto.randomBytes(8).toString("hex");
     const buffer = await scrypt(attrs.password, salt, 64);
 
     const records = await this.getAll();
     const record = {
-      ...attrs, 
-      password: `${buffer.toString('hex')}.${salt}`
+      ...attrs,
+      password: `${buffer.toString("hex")}.${salt}`,
     };
     records.push(record);
 
@@ -52,12 +51,12 @@ class UsersRepository {
     );
   }
 
-  async comparePassword(saved, supplied) {
-    // saved -> password save in our database ie hashed.salt
-    // supplied -> Signin password entered by user
-    const [hashed, salt] = saved.split('.');
-    const hashedSupplied = await scrypt(supplied, salt, 64);
-    return hashed === hashedSupplied;
+  async comparePassword(savedPass, userLogginPass) {
+    // savedPass -> password save in our database ie hashed.salt
+    // userLoggingPass -> Signin password entered by user
+    const [hashed, salt] = savedPass.split(".");
+    const hashedBuffer = await scrypt(userLogginPass, salt, 64);
+    return hashed === hashedBuffer.toString("hex");
   }
 
   // makes a randomized ID
@@ -124,4 +123,4 @@ class UsersRepository {
 // test();
 
 // EXPORTING INSTANCE OF THE CLASS
-module.exports = new UsersRepository('users.json');
+module.exports = new UsersRepository("users.json");

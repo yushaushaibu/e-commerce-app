@@ -1,7 +1,22 @@
 [
-    {
-        "email": "real@me.com",
-        "password": "12345",
-        "passwordConfirmation": "12345"
-    }
+  {
+    "email": "test@test.com",
+    "password": "12345",
+    "id": "4337c77460"
+  },
+  {
+    "email": "danhansik@gmail.com",
+    "password": "12345",
+    "id": "2f5414dba6"
+  },
+  {
+    "email": "ys532@nau.edu",
+    "password": "6sixer23",
+    "id": "196cf140b9"
+  },
+  {
+    "email": "real@me.com",
+    "password": "12345",
+    "id": "5a73c2decf"
+  }
 ]

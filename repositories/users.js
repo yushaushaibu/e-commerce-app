@@ -30,6 +30,7 @@ class UsersRepository {
     records.push(attrs);
 
     await this.writeAll(records);
+    return attrs;
   }
 
   // writes users into record

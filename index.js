@@ -15,7 +15,7 @@ app.use(
 
 app.get("/signup", (req, res) => {
   res.send(`
-            Your ID is: <strong>${req.session.userID}</strong>
+            Your ID is: <strong>${req.session.userId}</strong>
             <div>
                 <form method="POST">
                     <input name="email" placeholder="email">
@@ -40,7 +40,7 @@ app.post("/signup", async (req, res) => {
   }
 
   const user = await usersRepo.create({ email, password });
-  req.session.userID = user.id;
+  req.session.userId = user.id;
 
   res.send("Account created!!");
 });
@@ -60,9 +60,22 @@ app.get('/signin', (req, res) => {
   `)
 });
 
-app.post('/signin', (req, res) => {
+app.post('/signin', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await usersRepo.getOneBy({ email });
+  
+  if (!user) {
+    return res.send('User email not found');
+  }
 
-})
+  if (user.password !== password) {
+    return res.send('Incorrect password');
+  }
+
+  req.session.userId = user.id;
+  res.send('You are signed in');
+
+});
 
 app.listen(3000, () => {
   console.log("Listening..");

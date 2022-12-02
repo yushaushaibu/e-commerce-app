@@ -18,5 +18,15 @@
     "email": "real@me.com",
     "password": "12345",
     "id": "5a73c2decf"
+  },
+  {
+    "email": "test2@test.com",
+    "password": "111222",
+    "id": "c67fae56b6"
+  },
+  {
+    "email": "test3@test.com",
+    "password": "bad93b22cfe3fad052a2a9d1bf638d07d158ce40dff5d8fb0e97a8be699fb72f824ea1dfc7372cad959bc9760ba69711ff0c982c345ec14394dc666772675518.ad1237fbcef37469",
+    "id": "9d6dcfd3d6"
   }
 ]

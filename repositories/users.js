@@ -52,6 +52,14 @@ class UsersRepository {
     );
   }
 
+  async comparePassword(saved, supplied) {
+    // saved -> password save in our database ie hashed.salt
+    // supplied -> Signin password entered by user
+    const [hashed, salt] = saved.split('.');
+    const hashedSupplied = await scrypt(supplied, salt, 64);
+    return hashed === hashedSupplied;
+  }
+
   // makes a randomized ID
   randomId() {
     return crypto.randomBytes(5).toString("hex");

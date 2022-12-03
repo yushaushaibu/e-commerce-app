@@ -1,5 +1,5 @@
 const express = require("express");
-const { check, validationResult } = require("express-validator");
+const { check, validationResult, body } = require("express-validator");
 const usersRepo = require("../../repositories/users");
 const signupTemplate = require("../../views/admin/auth/signup");
 const signinTemplate = require("../../views/admin/auth/signin");
@@ -13,23 +13,35 @@ router.get("/signup", (req, res) => {
 router.post(
   "/signup",
   [
-    check("email").trim().normalizeEmail().isEmail(), 
-    check("password").trim().isLength({ min: 5, max: 25}), 
-    check("passwordConfirmation").trim().isLength({ min: 5, max: 25})
+    check("email")
+            .trim()
+            .normalizeEmail()
+            .isEmail()
+            .withMessage("Must be a valid email")
+            .custom(async (email) => {
+                const existingUser = await usersRepo.getOneBy({ email });
+                if (existingUser) {
+                        throw new Error('Email in use');
+                }
+    }),
+    check("password")
+            .trim()
+            .isLength({ min: 5, max: 25 })
+            .withMessage("Must be between 5 and 25 characters"),
+    check("passwordConfirmation")
+            .trim()
+            .isLength({ min: 5, max: 25 })
+            .withMessage("Must be between 5 and 25 characters")
+            .custom((passwordConfirmation, { req }) => {
+                if (passwordConfirmation !== req.body.password) {
+                    throw new Error ('Passwords do not match')
+                }
+            }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     console.log(errors);
     const { email, password, passwordConfirmation } = req.body;
-
-    const existingUser = await usersRepo.getOneBy({ email });
-    if (existingUser) {
-      return res.send("Email is already in use");
-    }
-
-    if (password !== passwordConfirmation) {
-      return res.send("Password do not match");
-    }
 
     const user = await usersRepo.create({ email, password });
     req.session.userId = user.id;

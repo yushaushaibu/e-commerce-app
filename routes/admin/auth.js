@@ -23,6 +23,10 @@ router.post(
     console.log(errors);
     const { email, password, passwordConfirmation } = req.body;
 
+    if (!errors.isEmpty()) {
+        return res.send(signupTemplate({ req, errors }));
+    }
+
     const user = await usersRepo.create({ email, password });
     req.session.userId = user.id;
 

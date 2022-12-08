@@ -58,4 +58,7 @@ module.exports = {
         throw new Error("Invalid password");
       }
     }),
+
+  requireProduct: check("product").trim().isLength({ min: 5, max: 25 }),
+  requirePrice: check('price').trim().toFloat().isFloat({min: 1})
 };

@@ -4,23 +4,26 @@ const multer = require("multer");
 
 const productRepo = require("../../repositories/products");
 const newProductTemplate = require("../../views/admin/products/newProduct");
-const productsIndexTemplate = require('../../views/admin/products/index');
+const { requireAuth } = require("./middleware");
+const productsIndexTemplate = require("../../views/admin/products/index");
 const { requireProduct, requirePrice } = require("./validators");
+const users = require("../../repositories/users");
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get("/admin/products", async (req, res) => {
+router.get("/admin/products", requireAuth, async (req, res) => {
   const products = await productRepo.getAll();
   res.send(productsIndexTemplate({ products }));
 });
 
-router.get("/admin/products/new", (req, res) => {
+router.get("/admin/products/new", requireAuth, (req, res) => {
   res.send(newProductTemplate({}));
 });
 
 router.post(
   "/admin/products/new",
+  requireAuth,
   upload.single("image"),
   [requireProduct, requirePrice],
   async (req, res) => {
@@ -34,7 +37,7 @@ router.post(
     const { product, price } = req.body;
     await productRepo.create({ product, price, image });
 
-    res.send("Product uploaded");
+    res.redirect("/admin/products");
   }
 );
 

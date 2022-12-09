@@ -59,6 +59,13 @@ module.exports = {
       }
     }),
 
-  requireProduct: check("product").trim().isLength({ min: 5, max: 25 }),
-  requirePrice: check('price').trim().toFloat().isFloat({min: 1})
+  requireProduct: check("product")
+    .trim()
+    .isLength({ min: 5, max: 25 })
+    .withMessage("Must be between 5 to 25 characters"),
+  requirePrice: check("price")
+    .trim()
+    .toFloat()
+    .isFloat({ min: 1 })
+    .withMessage("Must be a number greater than 1"),
 };

@@ -1,16 +1,46 @@
-const layout = require('../layout');
+const layout = require("../layout");
 
 module.exports = ({ products }) => {
-    const renderedProducts = products.map((product) => {
-        return `
-            <div>${product.product}</div>
-        `
-    }).join('');
-
-    return layout({
-        content: `
-            <h1 class="title">Products</h1>
-            ${renderedProducts}
-        `
+  const renderedProducts = products
+    .map((product) => {
+      return `
+      <tr>
+        <td>${product.product}</td>
+        <td>${product.price}</td>
+        <td>
+          <a href="/admin/products/${product.id}/edit">
+            <button class="button is-link">
+              Edit
+            </button>
+          </a>
+        </td>
+        <td>
+          <button class="button is-danger">Delete</button>
+        </td>
+      </tr>
+    `;
     })
-}
+    .join("");
+
+  return layout({
+    content: `
+      <div class="control">
+        <h1 class="subtitle">Products</h1>  
+        <a href="/admin/products/new" class="button is-primary">New Product</a>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${renderedProducts}
+        </tbody>
+      </table>
+    `,
+  });
+};

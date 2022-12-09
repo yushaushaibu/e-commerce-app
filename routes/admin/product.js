@@ -2,10 +2,11 @@ const express = require("express");
 const { validationResult } = require("express-validator");
 const multer = require("multer");
 
+const { requireAuth } = require("./middleware");
 const productRepo = require("../../repositories/products");
 const newProductTemplate = require("../../views/admin/products/newProduct");
-const { requireAuth } = require("./middleware");
 const productsIndexTemplate = require("../../views/admin/products/index");
+const productEditTemplate = require("../../views/admin/products/edit");
 const { requireProduct, requirePrice } = require("./validators");
 const users = require("../../repositories/users");
 
@@ -40,5 +41,19 @@ router.post(
     res.redirect("/admin/products");
   }
 );
+
+router.get("/admin/products/:id/edit", requireAuth, async (req, res) => {
+  const product = await productRepo.getOne(req.params.id);
+
+  if (!product) {
+    return res.send("Product not found");
+  }
+
+  res.send(productEditTemplate({ product }));
+});
+
+router.post('/admin/products/:id/edit', requireAuth, async (req, res) => {
+  
+})
 
 module.exports = router;

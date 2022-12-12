@@ -4,7 +4,7 @@ const cookieSession = require("cookie-session");
 const authRouter = require("./routes/admin/auth");
 const adminProductsRouter = require("./routes/admin/product");
 const productsRouter = require("./routes/product");
-const cartsRouter = require('./routes/carts');
+const cartsRouter = require("./routes/carts");
 const { application } = require("express");
 
 const app = express();
